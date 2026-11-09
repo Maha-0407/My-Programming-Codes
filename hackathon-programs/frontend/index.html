@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AttendEase | Faculty Portal</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f3f6fc;
+    color: #243047;
+}
+
+/* LOGIN PAGE */
+#loginPage {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #102a56, #3989d8);
+}
+
+.login-box {
+    width: 360px;
+    background: white;
+    padding: 35px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 15px 40px #0003;
+}
+
+.login-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+.login-box h2 {
+    color: #173c78;
+    margin-bottom: 8px;
+}
+
+.login-box p {
+    color: #78849a;
+    margin-bottom: 25px;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 13px;
+    margin: 10px 0;
+    border: 1px solid #dce3ef;
+    border-radius: 8px;
+}
+
+button {
+    border: none;
+    padding: 11px 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #2864b5;
+    color: white;
+    font-weight: 600;
+}
+
+.login-box button {
+    width: 100%;
+    margin-top: 15px;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+#loginError {
+    color: red;
+    margin-top: 10px;
+}
+
+/* SIDEBAR */
+#app {
+    display: none;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 235px;
+    height: 100vh;
+    background: #142d55;
+    color: white;
+    padding: 25px 15px;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #66b5ff;
+}
+
+.sidebar small {
+    color: #a9bddb;
+}
+
+.nav {
+    margin-top: 40px;
+}
+
+.nav button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    padding: 14px;
+    margin-bottom: 9px;
+    color: #dce8fa;
+}
+
+.nav button:hover,
+.nav button.selected {
+    background: #2864b5;
+}
+
+.logout {
+    position: absolute;
+    bottom: 25px;
+    left: 15px;
+    width: calc(100% - 30px);
+    background: #d9534f;
+}
+
+/* MAIN */
+.main {
+    margin-left: 235px;
+    padding: 28px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.topbar h2 {
+    color: #173c78;
+}
+
+.faculty {
+    background: white;
+    padding: 11px 17px;
+    border-radius: 10px;
+}
+
+/* PAGES */
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* DASHBOARD */
+.welcome {
+    background: linear-gradient(120deg, #2057a0, #3989d8);
+    color: white;
+    padding: 35px;
+    border-radius: 17px;
+    margin-bottom: 25px;
+}
+
+.welcome h1 {
+    margin-bottom: 10px;
+}
+
+.welcome p {
+    color: #e2efff;
+    line-height: 1.6;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 23px;
+    border-radius: 13px;
+    border-left: 4px solid #3989d8;
+}
+
+.card h3 {
+    color: #7b879b;
+    font-size: 14px;
+}
+
+.card h1 {
+    color: #173c78;
+    font-size: 30px;
+    margin-top: 12px;
+}
+
+.panel {
+    background: white;
+    padding: 24px;
+    border-radius: 13px;
+    margin-bottom: 22px;
+}
+
+.panel h3 {
+    margin-bottom: 18px;
+    color: #173c78;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.action {
+    padding: 20px;
+    background: #edf4ff;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.action:hover {
+    background: #dceaff;
+}
+
+.action h3 {
+    margin-top: 10px;
+    color: #2057a0;
+}
+
+/* FORMS AND TABLES */
+input, select, textarea {
+    padding: 11px;
+    border: 1px solid #d8e0ec;
+    border-radius: 7px;
+    margin: 7px 5px 7px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    background: white;
+}
+
+th, td {
+    padding: 13px;
+    border-bottom: 1px solid #e7edf5;
+    text-align: left;
+}
+
+th {
+    background: #edf4ff;
+    color: #173c78;
+}
+
+.danger {
+    background: #dc4c4c;
+}
+
+.success {
+    background: #249b68;
+}
+
+.low {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    background: #edf4ff;
+}
+
+.message {
+    margin-top: 12px;
+    color: #249b68;
+}
+
+@media(max-width: 900px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 600px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+    .logout {
+        position: static;
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .main {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .cards, .actions {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- FACULTY LOGIN -->
+
+<div id="loginPage">
+    <div class="login-box">
+
+        <div class="login-icon">🎓</div>
+
+        <h2>AttendEase</h2>
+        <p>Faculty Attendance Portal</p>
+
+        <input type="text" id="username"
+               placeholder="Faculty Username">
+
+        <input type="password" id="password"
+               placeholder="Password">
+
+        <button onclick="login()">Login to Dashboard</button>
+
+        <div id="loginError"></div>
+
+    </div>
+</div>
+
+<!-- MAIN APPLICATION -->
+
+<div id="app">
+
+<aside class="sidebar">
+
+    <div class="logo">Attend<span>Ease</span></div>
+    <small>Faculty Management Portal</small>
+
+    <div class="nav">
+
+        <button class="selected"
+        onclick="showPage('home',this)">🏠 Dashboard</button>
+
+        <button onclick="showPage('students',this)">
+        👨‍🎓 Students</button>
+
+        <button onclick="showPage('attendance',this)">
+        📅 Attendance</button>
+
+        <button onclick="showPage('corrections',this)">
+        📝 Corrections</button>
+
+    </div>
+
+    <button class="logout" onclick="logout()">Logout ↗</button>
+
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+    <h2 id="pageTitle">Dashboard</h2>
+    <div class="faculty">👩‍🏫 Faculty</div>
+</div>
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
+    <div class="welcome">
+        <h1>Welcome to AttendEase! 👋</h1>
+        <p>Manage student attendance easily, track student performance
+        and handle attendance correction requests from one place.</p>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Students</h3>
+            <h1 id="total">0</h1>
+        </div>
+
+        <div class="card">
+            <h3>Present Today</h3>
+            <h1 id="present">0</h1>
+        </div>
+
+        <div class="card">
+            <h3>Absent Today</h3>
+            <h1 id="absent">0</h1>
+        </div>
+
+        <div class="card">
+            <h3>Attendance Rate</h3>
+            <h1 id="rate">0%</h1>
+        </div>
+
+    </div>
+
+    <div class="panel">
+        <h3>⚡ Quick Actions</h3>
+
+        <div class="actions">
+
+            <div class="action" onclick="showPage('students')">
+                <div style="font-size:30px">👨‍🎓</div>
+                <h3>Manage Students</h3>
+                <p>Add and view student records</p>
+            </div>
+
+            <div class="action" onclick="showPage('attendance')">
+                <div style="font-size:30px">📅</div>
+                <h3>Mark Attendance</h3>
+                <p>Record daily attendance</p>
+            </div>
+
+            <div class="action" onclick="showPage('corrections')">
+                <div style="font-size:30px">📝</div>
+                <h3>Corrections</h3>
+                <p>Review attendance requests</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="panel">
+        <h3>⚠️ Low Attendance Alerts</h3>
+        <div id="lowList">Loading attendance data...</div>
+    </div>
+
+</section>
+
+<!-- STUDENTS -->
+
+<section id="students" class="page">
+
+    <div class="panel">
+        <h3>➕ Add New Student</h3>
+
+        <form id="studentForm">
+
+            <input id="studentName"
+            placeholder="Student Name" required>
+
+            <input id="rollNo"
+            placeholder="Roll Number" required>
+
+            <input id="department"
+            placeholder="Department" required>
+
+            <input id="year" type="number"
+            placeholder="Year" min="1" max="5" required>
+
+            <button type="submit">Add Student</button>
+
+        </form>
+
+        <div id="studentMessage" class="message"></div>
+    </div>
+
+    <div class="panel">
+        <h3>👨‍🎓 Student Records</h3>
+
+        <button onclick="loadStudents()">Refresh Students</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Roll Number</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="studentTable"></tbody>
+        </table>
+    </div>
+
+</section>
+
+<!-- ATTENDANCE -->
+
+<section id="attendance" class="page">
+
+    <div class="panel">
+
+        <h3>📅 Daily Attendance</h3>
+
+        <label>Select Date:</label>
+
+        <input type="date" id="attendanceDate">
+
+        <button onclick="loadAttendance()">View Attendance</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Roll Number</th>
+                    <th>Attendance Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="attendanceTable"></tbody>
+        </table>
+
+        <div id="attendanceMessage" class="message"></div>
+
+    </div>
+
+</section>
+
+<!-- CORRECTIONS -->
+
+<section id="corrections" class="page">
+
+    <div class="panel">
+
+        <h3>📝 Attendance Correction Requests</h3>
+
+        <button onclick="loadCorrections()">Refresh Requests</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Date</th>
+                    <th>Requested Status</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="correctionTable"></tbody>
+        </table>
+
+    </div>
+
+</section>
+
+</main>
+</div>
+
+<script>
+
+const API = "http://localhost:8080/api";
+
+/* LOGIN */
+
+function login() {
+
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if(user === "faculty" && pass === "1234") {
+
+        sessionStorage.setItem("facultyLoggedIn", "true");
+
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("app").style.display = "block";
+
+        loadDashboard();
+
+    } else {
+
+        document.getElementById("loginError").innerText =
+        "Invalid username or password!";
+
+    }
+}
+
+function logout() {
+
+    sessionStorage.removeItem("facultyLoggedIn");
+
+    document.getElementById("app").style.display = "none";
+    document.getElementById("loginPage").style.display = "flex";
+
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+}
+
+window.onload = function() {
+
+    if(sessionStorage.getItem("facultyLoggedIn") === "true") {
+
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("app").style.display = "block";
+
+        loadDashboard();
+    }
+
+    document.getElementById("attendanceDate").value =
+    new Date().toISOString().split("T")[0];
+
+};
+
+/* NAVIGATION */
+
+function showPage(id, button) {
+
+    document.querySelectorAll(".page").forEach(p => {
+        p.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    document.querySelectorAll(".nav button").forEach(b => {
+        b.classList.remove("selected");
+    });
+
+    if(button) button.classList.add("selected");
+
+    const titles = {
+        home: "Dashboard",
+        students: "Student Management",
+        attendance: "Daily Attendance",
+        corrections: "Correction Requests"
+    };
+
+    document.getElementById("pageTitle").innerText = titles[id];
+
+    if(id === "home") loadDashboard();
+    if(id === "students") loadStudents();
+    if(id === "attendance") loadAttendance();
+    if(id === "corrections") loadCorrections();
+
+}
+
+/* DASHBOARD */
+
+async function loadDashboard() {
+
+    try {
+
+        const response = await fetch(API + "/dashboard");
+        const data = await response.json();
+
+        document.getElementById("total").innerText = data.total;
+        document.getElementById("present").innerText = data.present;
+        document.getElementById("absent").innerText = data.absent;
+
+        let marked = data.present + data.absent;
+
+        let rate = marked === 0 ? 0 :
+        (data.present / marked * 100);
+
+        document.getElementById("rate").innerText =
+        rate.toFixed(1) + "%";
+
+        const res = await fetch(API + "/percentages");
+        const students = await res.json();
+
+        let low = students.filter(s => s.percentage < 75);
+
+        document.getElementById("lowList").innerHTML =
+        low.length === 0
+        ? "No low attendance alerts 🎉"
+        : low.map(s =>
+            `<p class="low">${s.name} (${s.roll_no}) -
+            ${Number(s.percentage).toFixed(1)}%</p>`
+        ).join("");
+
+    } catch(error) {
+
+        document.getElementById("lowList").innerText =
+        "Cannot connect to backend. Please start Java server.";
+
+    }
+
+}
+
+/* STUDENTS */
+
+document.getElementById("studentForm").addEventListener(
+"submit", async function(e) {
+
+    e.preventDefault();
+
+    const student = {
+
+        name: document.getElementById("studentName").value,
+        roll_no: document.getElementById("rollNo").value,
+        department: document.getElementById("department").value,
+        year: document.getElementById("year").value
+
+    };
+
+    try {
+
+        const res = await fetch(API + "/students", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(student)
+
+        });
+
+        const data = await res.json();
+
+        if(!res.ok) throw new Error(data.error || data.message);
+
+        document.getElementById("studentMessage").innerText =
+        "Student added successfully!";
+
+        this.reset();
+
+        loadStudents();
+        loadDashboard();
+
+    } catch(error) {
+
+        alert("Error: " + error.message);
+
+    }
+
+});
+
+async function loadStudents() {
+
+    try {
+
+        const res = await fetch(API + "/students");
+        const students = await res.json();
+
+        document.getElementById("studentTable").innerHTML =
+        students.map(s => `
+
+            <tr>
+                <td>${s.id}</td>
+                <td>${s.name}</td>
+                <td>${s.roll_no}</td>
+                <td>${s.department}</td>
+                <td>${s.year}</td>
+
+                <td>
+                    <button class="danger"
+                    onclick="deleteStudent(${s.id})">
+                    Delete</button>
+                </td>
+            </tr>
+
+        `).join("");
+
+    } catch(error) {
+
+        document.getElementById("studentTable").innerHTML =
+        "<tr><td colspan='6'>Cannot connect to backend</td></tr>";
+
+    }
+
+}
+
+async function deleteStudent(id) {
+
+    if(!confirm("Are you sure you want to delete this student?"))
+    return;
+
+    try {
+
+        const res = await fetch(API + "/students/" + id, {
+            method: "DELETE"
+        });
+
+        const data = await res.json();
+
+        if(!res.ok) throw new Error(data.error);
+
+        loadStudents();
+        loadDashboard();
+
+    } catch(error) {
+
+        alert("Error: " + error.message);
+
+    }
+
+}
+
+/* ATTENDANCE */
+
+async function loadAttendance() {
+
+    let date = document.getElementById("attendanceDate").value;
+
+    try {
+
+        const res = await fetch(API + "/attendance?date=" + date);
+        const students = await res.json();
+
+        document.getElementById("attendanceTable").innerHTML =
+        students.map(s => `
+
+            <tr>
+                <td>${s.name}</td>
+                <td>${s.roll_no}</td>
+
+                <td>
+
+                    <select id="status-${s.student_id}">
+
+                        <option value="Present"
+                        ${s.status === "Present" ? "selected" : ""}>
+                        Present</option>
+
+                        <option value="Absent"
+                        ${s.status === "Absent" ? "selected" : ""}>
+                        Absent</option>
+
+                    </select>
+
+                    <button onclick="saveAttendance(${s.student_id})">
+                    Save</button>
+
+                </td>
+            </tr>
+
+        `).join("");
+
+    } catch(error) {
+
+        alert("Cannot load attendance. Check Java backend.");
+
+    }
+
+}
+
+async function saveAttendance(id) {
+
+    let date = document.getElementById("attendanceDate").value;
+
+    let status = document.getElementById("status-" + id).value;
+
+    try {
+
+        const res = await fetch(API + "/attendance", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                student_id: id,
+                date: date,
+                status: status
+            })
+
+        });
+
+        const data = await res.json();
+
+        if(!res.ok) throw new Error(data.error);
+
+        document.getElementById("attendanceMessage").innerText =
+        data.message;
+
+        loadDashboard();
+
+    } catch(error) {
+
+        alert(error.message);
+
+    }
+
+}
+
+/* CORRECTIONS */
+
+async function loadCorrections() {
+
+    try {
+
+        const res = await fetch(API + "/corrections");
+        const requests = await res.json();
+
+        document.getElementById("correctionTable").innerHTML =
+        requests.map(r => `
+
+            <tr>
+                <td>${r.name}</td>
+                <td>${r.date}</td>
+                <td>${r.requested_status}</td>
+                <td>${r.reason}</td>
+                <td><span class="status">${r.status}</span></td>
+
+                <td>
+
+                    ${r.status === "Pending" ? `
+
+                        <button class="success"
+                        onclick="decideCorrection(${r.id},'Approved')">
+                        Approve</button>
+
+                        <button class="danger"
+                        onclick="decideCorrection(${r.id},'Rejected')">
+                        Reject</button>
+
+                    ` : "Completed"}
+
+                </td>
+            </tr>
+
+        `).join("");
+
+    } catch(error) {
+
+        alert("Cannot load correction requests.");
+
+    }
+
+}
+
+async function decideCorrection(id, decision) {
+
+    try {
+
+        const res = await fetch(
+        API + "/corrections/" + id + "/decision", {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                decision: decision
+            })
+
+        });
+
+        const data = await res.json();
+
+        if(!res.ok) throw new Error(data.error);
+
+        alert(data.message);
+
+        loadCorrections();
+        loadDashboard();
+
+    } catch(error) {
+
+        alert(error.message);
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
